@@ -2,7 +2,7 @@
 
 <h1 align="center">go-freedesktop</h1>
 <p align="center">Pure-Go implementations of the freedesktop.org specifications — no cgo, no D-Bus C library, no external tools.</p>
-<p align="center"><a href="https://go-freedesktop.github.io/docs/"><img src="https://img.shields.io/badge/docs-mkdocs--material-1E40AF?style=flat-square&logo=materialformkdocs&logoColor=white" alt="docs"></a> <a href="https://go-freedesktop.github.io/"><img src="https://img.shields.io/badge/site-go--freedesktop-3B82F6?style=flat-square" alt="site"></a> <img src="https://img.shields.io/badge/specs-6-2563EB?style=flat-square" alt="specs"> <img src="https://img.shields.io/badge/Go-1.26-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go"> <img src="https://img.shields.io/badge/license-BSD--3--Clause-1E40AF?style=flat-square" alt="license"></p>
+<p align="center"><a href="https://go-freedesktop.github.io/docs/"><img src="https://img.shields.io/badge/docs-mkdocs--material-1E40AF?style=flat-square&logo=materialformkdocs&logoColor=white" alt="docs"></a> <a href="https://go-freedesktop.github.io/"><img src="https://img.shields.io/badge/site-go--freedesktop-3B82F6?style=flat-square" alt="site"></a> <img src="https://img.shields.io/badge/modules-9-2563EB?style=flat-square" alt="modules"> <img src="https://img.shields.io/badge/Go-1.26-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go"> <img src="https://img.shields.io/badge/license-BSD--3--Clause-1E40AF?style=flat-square" alt="license"></p>
 
 ---
 
@@ -20,7 +20,7 @@ They are the desktop-integration layer beneath [go-widgets](https://github.com/g
 launchers and shells: each spec is one small module, so a caller pulls in only
 what it needs.
 
-## Modules (6)
+## Modules (9)
 
 | Module | freedesktop specification | What it gives you |
 |---|---|---|
@@ -30,9 +30,15 @@ what it needs.
 | [`mimeapps`](https://github.com/go-freedesktop/mimeapps) | [MIME Applications Associations](https://specifications.freedesktop.org/mime-apps-spec/latest/) | Given a MIME type, the **default** application and the **ordered** list of candidates (`mimeapps.list`), with round-trippable edits — the engine behind *"Open With…"*. |
 | [`menu`](https://github.com/go-freedesktop/menu) | [Desktop Menu](https://specifications.freedesktop.org/menu-spec/latest/) | Turn `applications.menu` XML into a resolved, categorized tree of app entries (Accessories, Graphics, System, …) for a launcher. |
 | [`notifications`](https://github.com/go-freedesktop/notifications) | [Desktop Notifications](https://specifications.freedesktop.org/notification-spec/latest/) | The `org.freedesktop.Notifications` D-Bus **service** side — decode `Notify` calls (`notify-send`, libnotify, …) and render them as [go-widgets](https://github.com/go-widgets/toolkit) `Toast`s. |
+| [`secretservice`](https://github.com/go-freedesktop/secretservice) | [Secret Service](https://specifications.freedesktop.org/secret-service-spec/latest/) | Store and read secrets where the desktop already keeps them — the `org.freedesktop.Secret.Service` D-Bus client that GNOME Keyring and KWallet answer. The Linux half of [go-keyring](https://github.com/go-keyring). |
+| [`screencast`](https://github.com/go-freedesktop/screencast) | *not a spec — X11* | Capture the pixels of displays and windows: MIT-SHM 1.2 with descriptor passing, `GetImage` fallback, RANDR 1.5 / XINERAMA, XFIXES cursor. **Wayland is not implemented**, and `Diagnose()` says so rather than failing obscurely. |
+| [`x11`](https://github.com/go-freedesktop/x11) | *not a spec — the protocol itself* | The foundation every X11 client needs first: wire codec, `.Xauthority`, connection setup, the MIT-SHM segment, the `SCM_RIGHTS` transport. Shared with [go-widgets/window](https://github.com/go-widgets/window), so one protocol parser cannot drift into two. |
 
 > The list reflects the repos that actually exist in the org today. More
-> freedesktop layers are added over time.
+> freedesktop layers are added over time. Two entries are marked *not a spec*:
+> `x11` is the X11 protocol's byte layer and `screencast` is the capture built
+> on it. They live here because they are what a Linux desktop needs next, but
+> the column heading would be a lie if they were left blank.
 
 ## Design
 
